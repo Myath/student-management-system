@@ -1,0 +1,91 @@
+{{template "header.html" .}}
+
+<div class="content-page">
+    <div class="content">
+
+        <!-- Start Content-->
+        <div class="container-fluid">
+            
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <form action="/adminlist" method="get">
+                                <input type="text" name="SearchTerm" id="term" value="{{ .SearchTerm}}">
+                                <input type="submit" value="Search">
+                            </form>
+                        </div>
+                        <h4 class="page-title">Admin Table</h4>
+                    </div>
+                </div>
+            </div>     
+            <!-- end page title --> 
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <h5 class="mt-0">All Admin</h5>
+                            <div class="table-responsive">
+                                <table class="table table-centered mb-0" id="btn-editable">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                
+                                    <tbody>
+                                        {{ range .Alladmin }}
+                                            <tr>
+                                                <td>
+                                                    {{ .ID }}
+                                                </td>
+                                                <td>
+                                                    {{ .Username }}
+                                                </td>
+                                                <td>
+                                                    {{ .Email }}
+                                                </td>
+                                                <td>
+                                                    {{ .First_name }}
+                                                </td>
+                                                <td>
+                                                    {{ .Last_name }}
+                                                </td>
+                                                <td>
+                                                    {{ if .Status}}Active{{else}}Inactive{{end}}
+                                                </td>
+                                                <td>
+                                                    <span><a href="#"><i class="ti-eye color-default"></i></a> </span>
+                                                    <span><a href="#"><i class="ti-pencil-alt color-success"></i></a></span>
+                                                    <span><a href="#"><i class="ti-trash color-danger"></i> </a></span>
+                                                </td>
+                                            </tr>
+                                            {{end}}
+                                    </tbody>
+                                </table>
+                            </div> <!-- end .table-responsive-->
+                        </div> <!-- end card-body -->
+                    </div> <!-- end card -->
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+
+</div>
+
+
+
+{{template "footer.html" .}}
+
+

@@ -1,0 +1,132 @@
+{{template "header.html" .}}
+<div class="content-page">
+    <div class="content">
+
+        <!-- Start Content-->
+        <div class="container-fluid">
+            
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
+                                <li class="breadcrumb-item active">Elements</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Basic Elements</h4>
+                    </div>
+                </div>
+            </div>     
+            <!-- end page title --> 
+
+            <!-- Form row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title">Admit Student</h4>
+                            <form action="/admitstudent" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                                <div class="form-row">
+                                        <select name="class_id">
+                                            <option value="" selected>Select a Class</option>
+                                            {{ range .Classlist}}
+                                                <option {{if eq $.Student.Class_ID .ID}} selected {{end}} value="{{.ID}}">{{.Class_name}}</option>
+                                            {{end}}
+                                        </select>
+                                </div>
+                                {{if .FormError.Class_ID}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Class_ID }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="username" class="col-form-label">User Name</label>
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Input user name" value="{{.Student.Username}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.Username}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Username }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="first_name" class="col-form-label">First Name</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Input first name" value="{{.Student.First_name}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.First_name}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.First_name }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="last_name" class="col-form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Input last name" value="{{.Student.Last_name}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.Last_name}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Last_name }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="email" class="col-form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Input email" value="{{.Student.Email}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.Email}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Email }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="roll" class="col-form-label">Roll</label>
+                                        <input type="number" class="form-control" id="roll" name="roll" placeholder="Input roll" value="{{.Student.Roll}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.Roll}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Roll }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="password" class="col-form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Input password">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Add</button>
+
+                            </form>
+
+                        </div> <!-- end card-body -->
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+            
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+
+    <!-- Footer Start -->
+    
+
+</div>
+{{template "footer.html" .}}

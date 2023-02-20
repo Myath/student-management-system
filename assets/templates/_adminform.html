@@ -1,0 +1,45 @@
+    <div class="col-md-6">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" name="username" value="{{ .Admin.Username}}">
+        <p style="color: rgb(255, 0, 0);">{{ .FormError.Username }}</p>
+    </div>
+
+    <div class="col-md-6">
+        <label for="username" class="form-label">Email</label>
+        <input type="text" class="form-control" name="email" value="{{ .Admin.Email}}">
+        <p style="color: rgb(255, 0, 0);">{{ .FormError.Email }}</p>
+    </div>
+
+    <div class="col-md-6">
+        <label for="first_name" class="form-label">First Name</label>
+        <input type="text" class="form-control" name="first_name" value="{{ .Admin.First_name}}">
+        <p style="color: rgb(255, 0, 0);">{{ .FormError.First_name }}</p>
+    </div>
+
+    <div class="col-md-6">
+        <label for="last_name" class="form-label">Last Name</label>
+        <input type="text" class="form-control" name="last_name" value="{{ .Admin.Last_name}}">
+        <p style="color: rgb(255, 0, 0);">{{ .FormError.Last_name }}</p>
+    </div>
+
+    <div class="col-md-6">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" name="password">
+        <p style="color: rgb(255, 0, 0);">{{ .FormError.Password }}</p>
+    </div>
+
+    {{if gt .Admin.ID 0}}
+                <div class="col-md-6">
+                    <label for="status" class="form-label">Status</label>
+                    <br>
+                    <label for="active">
+                    <input type="radio" name="status" value="true" {{if .Admin.Status}}checked{{end}}>
+                    Active
+                    </label>
+                    <label for="inactive">
+                    <input type="radio" name="status" value="false"{{if not .Admin.Status}}checked{{end}}>
+                    Inactive
+                    </label>
+                    <p style="color: rgb(248, 1, 1);">{{ .FormError.Status }}</p>
+                </div>
+    {{end}}
