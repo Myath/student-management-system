@@ -273,7 +273,3 @@ func (s Subjects) Validate() error {
 // 		),
 // 	)
 // }
-
-type AdmitStudentFiltera struct {
-	SearchTerm string
-}

@@ -467,7 +467,6 @@ func (p PostgresStorage) DeleteAdmitStudentByID(id int) error {
 	return nil
 }
 
-
 const updateClassesQuery = `UPDATE classes
 		SET classname = :classname
 		WHERE id = :id
@@ -487,4 +486,71 @@ func (p PostgresStorage) UpdateClasses(s storage.Classes) (*storage.Classes, err
 	return &s, nil
 }
 
+const getAdminByIDQuery = `SELECT * FROM admin WHERE id=$1 AND deleted_at IS NULL`
 
+func (p PostgresStorage) GetAdminByID(id int) (*storage.LoginAdmin, error) {
+	var s storage.LoginAdmin
+	if err := p.DB.Get(&s, getAdminByIDQuery, id); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+
+	return &s, nil
+}
+
+const updateAdminQuery = `UPDATE admin
+		SET username = :username,
+		email = :email,
+		first_name = :first_name,
+		last_name = :last_name,
+		password =:password,
+		status = :status
+		WHERE id = :id
+		RETURNING *;
+	`
+
+func (p PostgresStorage) UpdateAdmin(s storage.LoginAdmin) (*storage.LoginAdmin, error) {
+	stmt, err := p.DB.PrepareNamed(updateAdminQuery)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	hashPass, err := bcrypt.GenerateFromPassword([]byte(s.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+
+	s.Password = string(hashPass)
+	if err := stmt.Get(&s, s); err != nil {
+		return nil, err
+	}
+
+	if s.ID == 0 {
+		return nil, fmt.Errorf("unable to insert user into db")
+	}
+
+	return &s, nil
+}
+
+
+const deleteAdminByIDQuery = `UPDATE admin SET deleted_at = CURRENT_TIMESTAMP WHERE id=$1 AND deleted_at IS NULL`
+
+func (p PostgresStorage) DeleteAdminByID(id int) error {
+	res, err := p.DB.Exec(deleteAdminByIDQuery, id)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	if rowCount <= 0 {
+		return fmt.Errorf("unable to delete user")
+	}
+
+	return nil
+}
