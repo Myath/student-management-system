@@ -125,3 +125,14 @@ func (h Handler) pharseEditClass(w http.ResponseWriter, data any) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 }
+
+func (h Handler) pharseEditAdmin(w http.ResponseWriter, data any) {
+	t := h.Templates.Lookup("adminedit.html")
+	if t == nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}
+	if err := t.Execute(w, data); err != nil {
+		log.Fatal(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}
+}

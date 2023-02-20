@@ -1,0 +1,130 @@
+{{template "header.html" .}}
+<div class="content-page">
+    <div class="content">
+
+        <!-- Start Content-->
+        <div class="container-fluid">
+            
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">UBold</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
+                                <li class="breadcrumb-item active">Elements</li>
+                            </ol>
+                        </div>
+                        <h4 class="page-title">Basic Elements</h4>
+                    </div>
+                </div>
+            </div>     
+            <!-- end page title --> 
+
+            <!-- Form row -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="header-title">Edit Admin</h4>
+                            <form action="/admin/update/{{.Admin.ID}}" method="POST">
+                                <input type="hidden" name="_method" value="PUT">
+                                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="username" class="col-form-label">User Name</label>
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Input user name" value="{{.Admin.Username}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.Username}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Username }}
+                                    </div>
+                                {{end}}
+
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="email" class="col-form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" name="email" placeholder="Input email" value="{{.Admin.Email}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.Email}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Email }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="first_name" class="col-form-label">First Name</label>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Input first name" value="{{.Admin.First_name}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.First_name}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.First_name }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="last_name" class="col-form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Input last name" value="{{.Admin.Last_name}}">
+                                    </div>
+                                </div>
+                                {{if .FormError.Last_name}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Last_name }}
+                                    </div>
+                                {{end}}
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="password" class="col-form-label">Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Input password">
+                                    </div>
+                                </div>
+                                {{if .FormError.Password}}
+                                <div class="alert alert-danger">
+                                    <strong>Danger!</strong> {{ .FormError.Password }}
+                                </div>
+                                {{end}}
+
+                                {{if gt .Admin.ID 0}}
+                                <div class="col-md-6">
+                                    <label for="status" class="form-label">Status</label>
+                                    <br>
+                                    <label for="active">
+                                    <input type="radio" name="status" value="true" {{if .Admin.Status}}checked{{end}}>
+                                    Active
+                                    </label>
+                                    <label for="inactive">
+                                    <input type="radio" name="status" value="false"{{if not .Admin.Status}}checked{{end}}>
+                                    Inactive
+                                    </label>
+                                    <p style="color: rgb(248, 1, 1);">{{ .FormError.Status }}</p>
+                                </div>
+                                {{end}}
+
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Add</button>
+
+                            </form>
+
+                        </div> <!-- end card-body -->
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+            </div>
+            <!-- end row -->
+            
+        </div> <!-- container -->
+
+    </div> <!-- content -->
+
+    <!-- Footer Start -->
+    
+
+</div>
+{{template "footer.html" .}}

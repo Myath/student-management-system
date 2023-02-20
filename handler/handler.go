@@ -56,7 +56,9 @@ type dbstorage interface {
 	DeleteAdmitStudentByID(id int) error
 	GetClassByID(id int) (*storage.Classes, error)
 	UpdateClasses(s storage.Classes) (*storage.Classes, error)
-	
+	GetAdminByID(id int) (*storage.LoginAdmin, error)
+	UpdateAdmin(s storage.LoginAdmin) (*storage.LoginAdmin, error)
+	DeleteAdminByID(id int) error
 }
 
 const (
@@ -79,6 +81,7 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 	assetsPrefixForStudentUpdate := "/admitstudent/update/static/"
 	assetsPrefixForClassEdit := "/class/edit/static/"
 	assetsPrefixForClassUpdate := "/class/update/static/"
+	assetsPrefixForAdminEdit := "/admin/edit/static/"
 
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
@@ -88,6 +91,10 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 
 	r.Get("/admincreate", h.AdminCreate)
 	r.Post("/admincreate", h.AdminCreateProcess)
+
+	r.Get("/admin/edit/{id:[0-9]+}", h.AdminEdit)
+	r.Put("/admin/update/{id:[0-9]+}", h.AdminUpdate)
+	r.Get("/admin/delete/{id:[0-9]+}", h.DeleteAdmin)
 
 	r.Group(func(r chi.Router) {
 		r.Use(sm.LoadAndSave)
@@ -105,7 +112,7 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 	r.Handle(assetsPrefixForStudentUpdate+"*", http.StripPrefix(assetsPrefixForStudentUpdate, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForClassEdit+"*", http.StripPrefix(assetsPrefixForClassEdit, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForClassUpdate+"*", http.StripPrefix(assetsPrefixForClassUpdate, http.FileServer(filesDir)))
-	
+	r.Handle(assetsPrefixForAdminEdit+"*", http.StripPrefix(assetsPrefixForAdminEdit, http.FileServer(filesDir)))
 
 	r.Group(func(r chi.Router) {
 		r.Use(sm.LoadAndSave)

@@ -36,7 +36,6 @@ func (h Handler) AdmitStudentEdit(w http.ResponseWriter, r *http.Request) {
 		Classlist: classlist,
 		Student:   *editStudents,
 		CSRFToken: nosurf.Token(r),
-		FormError: map[string]error{},
 	})
 }
 
