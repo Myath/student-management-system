@@ -129,7 +129,7 @@ func (h Handler) AdmitStudentUpdate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
-	eRR := h.MarksHandler(w, r, student.Class_ID, data.ID)
+	eRR := h.StudentSubjectHandler(w, r, student.Class_ID, data.ID)
 	if eRR != nil {
 		log.Println(eRR)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -137,3 +137,6 @@ func (h Handler) AdmitStudentUpdate(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/admitstudentlist", http.StatusSeeOther)
 }
+
+
+

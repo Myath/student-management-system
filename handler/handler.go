@@ -45,7 +45,7 @@ type dbstorage interface {
 	CheckAdmitStudentExists(username, email string) (bool, error)
 	CheckAdmitStudentRollExists(roll int) (bool, error)
 	AdmitStudentList(uf storage.AdmitStudentFilter) ([]storage.AdmitStudents, error)
-	InsertMark(s storage.StudentSubject) (*storage.StudentSubject, error)
+	InsertStudentSubject(s storage.StudentSubject) (*storage.StudentSubject, error)
 	GetSubjectByClassID(class_id int) ([]storage.Subjects, error)
 	DeleteSClassByID(id int) error
 	GetSubjectByID(id int) (*storage.Subjects, error)

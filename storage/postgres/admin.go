@@ -313,22 +313,22 @@ func (s PostgresStorage) GetSubjectByClassID(class_id int) ([]storage.Subjects, 
 	return u, nil
 }
 
-const insertMarkQuery = `
-	INSERT INTO student_subject(
-		student_id,
-		subject_id,
-        marks
-		)  
-	VALUES(
-		:student_id,
-		:subject_id,
-		:marks
-		)RETURNING *;
+const insertStudentSubjectMQuery = `
+		INSERT INTO student_subject (
+			student_id, 
+			subject_id, 
+			marks
+		) VALUES (
+			:student_id,
+			:subject_id,
+			:marks
+		)
+		RETURNING *;
 	`
 
-func (p PostgresStorage) InsertMark(s storage.StudentSubject) (*storage.StudentSubject, error) {
+func (p PostgresStorage) InsertStudentSubject(s storage.StudentSubject) (*storage.StudentSubject, error) {
 
-	stmt, err := p.DB.PrepareNamed(insertMarkQuery)
+	stmt, err := p.DB.PrepareNamed(insertStudentSubjectMQuery)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -340,6 +340,7 @@ func (p PostgresStorage) InsertMark(s storage.StudentSubject) (*storage.StudentS
 
 	return &s, nil
 }
+
 
 func (p PostgresStorage) CheckAdmitStudentExists(username, email string) (bool, error) {
 	var exists bool

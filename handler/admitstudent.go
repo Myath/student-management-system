@@ -104,7 +104,7 @@ func (h Handler) AdmitStudentProcess(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
-	eRR := h.MarksHandler(w, r, student.Class_ID, data.ID)
+	eRR := h.StudentSubjectHandler(w, r, student.Class_ID, data.ID)
 	if eRR != nil {
 		log.Println(eRR)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -129,7 +129,7 @@ func (h Handler) IsAdmitStudentRoll(w http.ResponseWriter, r *http.Request, roll
 	return ad, nil
 }
 
-func (h Handler) MarksHandler(w http.ResponseWriter, r *http.Request, classID int, studentID int) error {
+func (h Handler) StudentSubjectHandler(w http.ResponseWriter, r *http.Request, classID int, studentID int) error {
 
 	subject, err := h.storage.GetSubjectByClassID(classID)
 	if err != nil {
@@ -144,7 +144,7 @@ func (h Handler) MarksHandler(w http.ResponseWriter, r *http.Request, classID in
 			Marks:     0,
 		}
 
-		_, err := h.storage.InsertMark(b)
+		_, err := h.storage.InsertStudentSubject(b)
 		if err != nil {
 			log.Fatalf("%v", err)
 			return err
