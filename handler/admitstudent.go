@@ -62,28 +62,46 @@ func (h Handler) AdmitStudentProcess(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	checkAlreadyExist, err := h.IsAdmitStudent(w, r, student.Username, student.Email)
+	checkUsernameAlreadyExist, err := h.IsAdmitStudentUsername(w, r, student.Username)
 
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	if checkAlreadyExist {
+	if checkUsernameAlreadyExist {
 		h.pareseAdmitStudentTemplate(w, AdmitStudentForm{
 			Classlist: classlist,
 			Student:   student,
 			Class:     storage.Classes{},
 			CSRFToken: nosurf.Token(r),
 			FormError: map[string]error{
-				"Username": fmt.Errorf("The username/email already Exist."),
+				"Username": fmt.Errorf("The username already Exist."),
 			}})
 		return
 	}
 
-	checkRollAlreadyExist, err := h.IsAdmitStudentRoll(w, r, student.Roll)
+	checkEmailAlreadyExist, eRr := h.IsAdmitStudentEmail(w, r, student.Email)
 
-	if err != nil {
-		fmt.Println(err)
+	if eRr != nil {
+		fmt.Println(eRr)
+		return
+	}
+	if checkEmailAlreadyExist {
+		h.pareseAdmitStudentTemplate(w, AdmitStudentForm{
+			Classlist: classlist,
+			Student:   student,
+			Class:     storage.Classes{},
+			CSRFToken: nosurf.Token(r),
+			FormError: map[string]error{
+				"Email": fmt.Errorf("The username already Exist."),
+			}})
+		return
+	}
+
+	checkRollAlreadyExist, eRR := h.IsAdmitStudentRoll(w, r, student.Roll)
+
+	if eRR != nil {
+		fmt.Println(eRR)
 		return
 	}
 	if checkRollAlreadyExist {
@@ -98,14 +116,14 @@ func (h Handler) AdmitStudentProcess(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, eRr := h.storage.AdmitStudentCreate(student)
-	if eRr != nil {
+	data, er := h.storage.AdmitStudentCreate(student)
+	if er != nil {
 		log.Println(eRr)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
-	eRR := h.StudentSubjectHandler(w, r, student.Class_ID, data.ID)
-	if eRR != nil {
+	eRRor := h.StudentSubjectHandler(w, r, student.Class_ID, data.ID)
+	if eRRor != nil {
 		log.Println(eRR)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
@@ -113,8 +131,16 @@ func (h Handler) AdmitStudentProcess(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admitstudentlist", http.StatusSeeOther)
 }
 
-func (h Handler) IsAdmitStudent(w http.ResponseWriter, r *http.Request, username, email string) (bool, error) {
-	ad, err := h.storage.CheckAdmitStudentExists(username, email)
+func (h Handler) IsAdmitStudentUsername(w http.ResponseWriter, r *http.Request, username string) (bool, error) {
+	ad, err := h.storage.CheckAdmitStudentUsernameExists(username)
+	if err != nil {
+		log.Fatalf("%v", err)
+	}
+	return ad, nil
+}
+
+func (h Handler) IsAdmitStudentEmail(w http.ResponseWriter, r *http.Request, email string) (bool, error) {
+	ad, err := h.storage.CheckAdmitStudentUsernameExists(email)
 	if err != nil {
 		log.Fatalf("%v", err)
 	}

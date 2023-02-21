@@ -42,7 +42,8 @@ type dbstorage interface {
 	CheckSubjectExists(subjectname string, class_id int) (bool, error)
 	SubjectList(uf storage.SubjectFilter) ([]storage.Subjects, error)
 	AdmitStudentCreate(s storage.AdmitStudents) (*storage.AdmitStudents, error)
-	CheckAdmitStudentExists(username, email string) (bool, error)
+	CheckAdmitStudentUsernameExists(username string) (bool, error)
+	CheckAdmitStudenEmailtExists(email string) (bool, error)
 	CheckAdmitStudentRollExists(roll int) (bool, error)
 	AdmitStudentList(uf storage.AdmitStudentFilter) ([]storage.AdmitStudents, error)
 	InsertStudentSubject(s storage.StudentSubject) (*storage.StudentSubject, error)
@@ -59,6 +60,7 @@ type dbstorage interface {
 	GetAdminByID(id int) (*storage.LoginAdmin, error)
 	UpdateAdmin(s storage.LoginAdmin) (*storage.LoginAdmin, error)
 	DeleteAdminByID(id int) error
+	UpdateStudentSubjectsMark(s storage.StudentSubject) (*storage.StudentSubject, error)
 }
 
 const (

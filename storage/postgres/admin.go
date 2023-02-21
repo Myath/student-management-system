@@ -342,9 +342,40 @@ func (p PostgresStorage) InsertStudentSubject(s storage.StudentSubject) (*storag
 }
 
 
-func (p PostgresStorage) CheckAdmitStudentExists(username, email string) (bool, error) {
+
+const updateStudentSubjectsMarkQuery = `UPDATE student_subject
+		SET student_id = :student_id, 
+		subject_id = :subject_id,
+		marks = :marks
+		WHERE id = :id
+		RETURNING *;
+	`
+
+func (p PostgresStorage) UpdateStudentSubjectsMark(s storage.StudentSubject) (*storage.StudentSubject, error) {
+	stmt, err := p.DB.PrepareNamed(updateStudentSubjectsMarkQuery)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := stmt.Get(&s, s); err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	return &s, nil
+}
+
+func (p PostgresStorage) CheckAdmitStudentUsernameExists(username string) (bool, error) {
 	var exists bool
-	err := p.DB.QueryRow(`SELECT exists(SELECT 1 FROM admitstudent WHERE username = $1 OR email = $2 AND deleted_at IS NULL)`, username, email).Scan(&exists)
+	err := p.DB.QueryRow(`SELECT exists(SELECT 1 FROM admitstudent WHERE username = $1 AND deleted_at IS NULL)`, username).Scan(&exists)
+	if err != nil {
+		return false, err
+	}
+	return exists, nil
+}
+
+func (p PostgresStorage) CheckAdmitStudenEmailtExists(email string) (bool, error) {
+	var exists bool
+	err := p.DB.QueryRow(`SELECT exists(SELECT 1 FROM admitstudent WHERE email = $1 AND deleted_at IS NULL)`, email).Scan(&exists)
 	if err != nil {
 		return false, err
 	}

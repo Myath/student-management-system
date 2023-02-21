@@ -77,39 +77,64 @@ func (h Handler) AdmitStudentUpdate(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	
+
 	singlestudent, err := h.storage.GetAdmitStudentByID(student.ID)
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
-	if singlestudent.Username != student.Username || singlestudent.Email != student.Email {
-		checkAlreadyExist, err := h.IsAdmitStudent(w, r, student.Username, student.Email)
-
+	if singlestudent.Username != student.Username {
+		checkUsernameAlreadyExist, err := h.IsAdmitStudentUsername(w, r, student.Username)
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-		if checkAlreadyExist {
+
+		if checkUsernameAlreadyExist {
 			h.pharseEditStudents(w, AdmitStudentForm{
 				Classlist: classlist,
 				Student:   student,
 				Class:     storage.Classes{},
 				CSRFToken: nosurf.Token(r),
 				FormError: map[string]error{
-					"Username": fmt.Errorf("The username/email already Exist."),
+					"Username": fmt.Errorf("The username already Exist."),
 				}})
 			return
 		}
 
-	} else if singlestudent.Roll != student.Roll {
+	}
+
+	if singlestudent.Email != student.Email {
+		checkEmailAlreadyExist, err := h.IsAdmitStudentEmail(w, r, student.Email)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		if checkEmailAlreadyExist {
+			h.pharseEditStudents(w, AdmitStudentForm{
+				Classlist: classlist,
+				Student:   student,
+				Class:     storage.Classes{},
+				CSRFToken: nosurf.Token(r),
+				FormError: map[string]error{
+					"Email": fmt.Errorf("The email already Exist."),
+				}})
+			return
+		}
+
+	} 
+	
+	
+	if singlestudent.Roll != student.Roll {
 		checkRollAlreadyExist, err := h.IsAdmitStudentRoll(w, r, student.Roll)
 
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
+
 		if checkRollAlreadyExist {
 			h.pharseEditStudents(w, AdmitStudentForm{
 				Classlist: classlist,
@@ -123,20 +148,11 @@ func (h Handler) AdmitStudentUpdate(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	data, eRr := h.storage.UpdateAdminStudent(student)
+	_, eRr := h.storage.UpdateAdminStudent(student)
 	if eRr != nil {
 		log.Println(eRr)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 
-	eRR := h.StudentSubjectHandler(w, r, student.Class_ID, data.ID)
-	if eRR != nil {
-		log.Println(eRR)
-		http.Error(w, "internal server error", http.StatusInternalServerError)
-	}
-
 	http.Redirect(w, r, "/admitstudentlist", http.StatusSeeOther)
 }
-
-
-
