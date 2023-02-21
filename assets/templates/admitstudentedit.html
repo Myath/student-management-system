@@ -32,12 +32,12 @@
                                 <input type="hidden" name="_method" value="PUT">
                                 <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                                 <div class="form-row">
-                                        <select name="class_id">
-                                            <option value="" selected>Select a Class</option>
-                                            {{ range .Classlist}}
-                                                <option {{if eq $.Student.Class_ID .ID}} selected {{end}} value="{{.ID}}">{{.Class_name}}</option>
-                                            {{end}}
-                                        </select>
+                                    <select name="class_id">
+                                        <option value="" disabled>Select a Class</option>
+                                        {{ range .Classlist}}
+                                            <option value="{{.ID}}" {{if eq $.Student.Class_ID .ID}} selected {{end}} {{if ne $.Student.Class_ID .ID}} disabled {{end}}>{{.Class_name}}</option>
+                                        {{end}}
+                                    </select>
                                 </div>
                                 {{if .FormError.Class_ID}}
                                     <div class="alert alert-danger">
