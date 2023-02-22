@@ -56,10 +56,12 @@ func (p PostgresStorage) AdmitStudentCreate(s storage.AdmitStudents) (*storage.A
 
 
 // Query For AdmitStudent by INNER JOIN with search term
-const listAdmitStudentQuery = `SELECT admitstudent.id, admitstudent.class_id, username, first_name, last_name, email, roll, status, classes.classname
+const listAdmitStudentQuery = `SELECT admitstudent.id, admitstudent.class_id, username, first_name, last_name, email, roll, status, classes.classname, MAX(student_subject.marks) AS marks
 FROM admitstudent
 INNER JOIN classes ON admitstudent.class_id = classes.id
+INNER JOIN student_subject ON admitstudent.id = student_subject.student_id
 WHERE classes.deleted_at IS NULL AND admitstudent.deleted_at IS NULL AND (username ILIKE '%%' || $1 || '%%' or first_name ILIKE '%%' || $1 || '%%' or last_name ILIKE '%%' || $1 || '%%' or email ILIKE '%%' || $1 || '%%' or classname ILIKE '%%' || $1 || '%%')
+GROUP BY admitstudent.id, admitstudent.class_id, username, first_name, last_name, email, roll, status, classes.classname
 ORDER BY classes.classname ASC;`
 
 func (p PostgresStorage) AdmitStudentList(uf storage.AdmitStudentFilter) ([]storage.AdmitStudents, error) {
@@ -179,27 +181,3 @@ func (p PostgresStorage) CheckAdmitStudentRollExists(roll int) (bool, error) {
 	return exists, nil
 }
 
-
-const getFixedStudentSubjectByIDQuery = `SELECT * FROM student_subject WHERE student_id=$1 AND deleted_at IS NULL`
-
-func (p PostgresStorage) GetFixedStudentSubjectByID(id int) ([]storage.StudentSubject, error) {
-	var s []storage.StudentSubject
-	if err := p.DB.Select(&s, getFixedStudentSubjectByIDQuery, id); err != nil {
-		log.Println(err)
-		return nil, err
-	}
-
-	return s, nil
-}
-
-const getFixedSubjectByIDQuery = `SELECT subjectname FROM subjects WHERE id=$1 AND deleted_at IS NULL`
-
-func (p PostgresStorage) GetFixedSubjectByID(id int) (storage.Subjects, error) {
-	var s storage.Subjects
-	if err := p.DB.Get(&s, getFixedSubjectByIDQuery, id); err != nil {
-		log.Println(err)
-		return storage.Subjects{}, err
-	}
-
-	return s, nil
-}
