@@ -8,8 +8,6 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
-
-
 type AdminFilter struct {
 	SearchTerm string
 }
@@ -25,8 +23,6 @@ type SubjectFilter struct {
 type AdmitStudentFilter struct {
 	SearchTerm string
 }
-
-
 
 type LoginAdmin struct {
 	ID         int              `db:"id" form:"-"`
@@ -74,6 +70,7 @@ type AdmitStudents struct {
 	Email      string           `db:"email" form:"email"`
 	Class_name string           `db:"classname" form:"-"`
 	Roll       int              `db:"roll" form:"roll"`
+	Marks      int              `db:"marks" form:"marks"`
 	Password   string           `db:"password" form:"password"`
 	Status     bool             `db:"status" form:"status"`
 	CreatedAt  time.Time        `db:"created_at" form:"-"`
@@ -84,17 +81,22 @@ type AdmitStudents struct {
 }
 
 type StudentSubject struct {
-	ID        int          `db:"id" form:"-"`
-	StudentID int          `db:"student_id" form:"student_id"`
-	SubjectID int          `db:"subject_id" form:"subject_id"`
-	Marks     int          `db:"marks" form:"marks"`
-	Mark map[int]int       
-	CreatedAt time.Time    `db:"created_at" form:"-"`
-	UpdatedAt time.Time    `db:"updated_at" form:"-"`
-	DeletedAt sql.NullTime `db:"deleted_at" form:"-"`
+	ID           int    `db:"id" form:"-"`
+	StudentID    int    `db:"student_id" form:"student_id"`
+	SubjectID    int    `db:"subject_id" form:"subject_id"`
+	Marks        int    `db:"marks" form:"marks"`
+	Subject_name string `db:"subjectname" form:"subjectname"`
+	Username     string `db:"username" form:"username"`
+	First_name   string `db:"first_name" form:"first_name"`
+	Last_name    string `db:"last_name" form:"last_name"`
+	Email        string `db:"email" form:"email"`
+	Class_name   string `db:"classname" form:"-"`
+	Roll         int    `db:"roll" form:"roll"`
+	Mark         map[int]int
+	CreatedAt    time.Time    `db:"created_at" form:"-"`
+	UpdatedAt    time.Time    `db:"updated_at" form:"-"`
+	DeletedAt    sql.NullTime `db:"deleted_at" form:"-"`
 }
-
-
 
 func (s AdmitStudents) Validate() error {
 	return validation.ValidateStruct(&s,

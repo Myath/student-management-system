@@ -21,7 +21,6 @@
                 </div>
             </div>     
             <!-- end page title --> 
-
             <!-- Form row -->
             <div class="row">
                 <div class="col-12">
@@ -31,16 +30,13 @@
                             <form action="/markstore" method="POST">
                                 <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                                 <input type="hidden" name="student_id" value="{{.ID}}">
-                                {{ range .FixedSubject}}
+                                {{ range .FixedStudentSubject}}
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="subjectname" class="col-form-label">{{ .Subject_name }}</label>
                                     </div>
-                                    {{ end }}
-                                    {{ range .FixedStudentSubject}}
                                     <div class="form-group col-md-6">
-                                            <input type="number" class="form-control" id="mark" name="Mark[{{.SubjectID}}]" placeholder="Input mark name" value="">
-                                        
+                                            <input type="number" class="form-control" id="mark" name="Mark[{{.SubjectID}}]" placeholder="Input mark" value="">
                                     </div>
                                 </div>
                                 {{ end }}

@@ -68,7 +68,13 @@
                                                     {{ if .Status}}Active{{else}}Inactive{{end}}
                                                 </td>
                                                 <td>
-                                                    <a href="/addmark/{{.ID}}" target="_parent"><button class="button button1">Add Mark</button></a>
+                                                    <a href="/addmark/{{.ID}}" target="_parent">
+                                                        {{ if gt .Marks 0}}
+                                                        <button class="button button1" disabled>Mark Submitted</button>
+                                                        {{ else }}
+                                                        <button class="button button1">Add Mark</button>
+                                                        {{ end }}
+                                                    </a>
                                                 </td>
                                                 <td>
                                                     <span><a href="#"><i class="ti-eye color-default"></i></a> </span>

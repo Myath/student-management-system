@@ -61,14 +61,12 @@ type dbstorage interface {
 	CheckAdmitStudentRollExists(roll int) (bool, error)
 	GetAdmitStudentByID(id int) (*storage.AdmitStudents, error)
 
-	GetFixedStudentSubjectByID(id int) ([]storage.StudentSubject, error)
-	GetFixedSubjectByID(id int) (storage.Subjects, error)
 
 	// For StudentSubject
+	GetFixedStudentSubjectByID(id int) ([]storage.StudentSubject, error)
 	InsertStudentSubject(s storage.StudentSubject) (*storage.StudentSubject, error)
 	GetSubjectByClassID(class_id int) ([]storage.Subjects, error)
-
-	UpdateStudentSubjectsMark(s storage.StudentSubject) (*storage.StudentSubject, error)
+	UpdateMark(s storage.StudentSubject) (*storage.StudentSubject, error)
 }
 
 const (
@@ -127,6 +125,7 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 	r.Handle(assetsPrefixForClassUpdate+"*", http.StripPrefix(assetsPrefixForClassUpdate, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForAdminEdit+"*", http.StripPrefix(assetsPrefixForAdminEdit, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForAddMark+"*", http.StripPrefix(assetsPrefixForAddMark, http.FileServer(filesDir)))
+	
 
 	r.Group(func(r chi.Router) {
 		r.Use(sm.LoadAndSave)
