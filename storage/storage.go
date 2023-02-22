@@ -8,9 +8,7 @@ import (
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
-type StudentFilter struct {
-	SearchTerm string
-}
+
 
 type AdminFilter struct {
 	SearchTerm string
@@ -28,23 +26,7 @@ type AdmitStudentFilter struct {
 	SearchTerm string
 }
 
-type Student struct {
-	ID          int              `db:"id" form:"-"`
-	Name        string           `db:"name" form:"name"`
-	Email       string           `db:"email" form:"email"`
-	Roll        int              `db:"roll" form:"roll"`
-	English     int              `db:"english" form:"eng"`
-	Bangla      int              `db:"bangla" form:"ban"`
-	Mathematics int              `db:"mathematics" form:"math"`
-	Grade       string           `db:"grade" form:"-"`
-	GPA         float64          `db:"gpa" form:"-"`
-	Status      bool             `db:"status" form:"status"`
-	CreatedAt   time.Time        `db:"created_at" form:"-"`
-	UpdatedAt   time.Time        `db:"updated_at" form:"-"`
-	DeletedAt   sql.NullTime     `db:"deleted_at" form:"-"`
-	FormError   map[string]error `db:"-"`
-	CSRFToken   string           `db:"-" form:"csrf_token"`
-}
+
 
 type LoginAdmin struct {
 	ID         int              `db:"id" form:"-"`
@@ -103,43 +85,16 @@ type AdmitStudents struct {
 
 type StudentSubject struct {
 	ID        int          `db:"id" form:"-"`
-	StudentID int       `db:"student_id" form:"student_id"`
+	StudentID int          `db:"student_id" form:"student_id"`
 	SubjectID int          `db:"subject_id" form:"subject_id"`
 	Marks     int          `db:"marks" form:"marks"`
+	Mark map[int]int       
 	CreatedAt time.Time    `db:"created_at" form:"-"`
 	UpdatedAt time.Time    `db:"updated_at" form:"-"`
 	DeletedAt sql.NullTime `db:"deleted_at" form:"-"`
 }
 
-func (s Student) Validate() error {
-	return validation.ValidateStruct(&s,
-		validation.Field(&s.Name,
-			validation.Required.Error("The name field is required."),
-			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
-		),
-		validation.Field(&s.Email,
-			validation.Required.When(s.ID == 0).Error("The email field is required."),
-			is.Email.Error("This email is not valid."),
-		),
-		validation.Field(&s.Roll,
-			validation.Required.When(s.ID == 0).Error("Student roll start from 1"),
-			validation.Min(1).Error("Student roll start from 1"),
-			validation.Max(200).Error("Only 200 Students are allowed"),
-		),
-		validation.Field(&s.English,
-			validation.Min(0).Error("The lowest mark is 0."),
-			validation.Max(100).Error("The highest mark is 100."),
-		),
-		validation.Field(&s.Bangla,
-			validation.Min(0).Error("The lowest mark is 0."),
-			validation.Max(100).Error("The highest mark is 100."),
-		),
-		validation.Field(&s.Mathematics,
-			validation.Min(0).Error("The lowest mark is 0."),
-			validation.Max(100).Error("The highest mark is 100."),
-		),
-	)
-}
+
 
 func (s AdmitStudents) Validate() error {
 	return validation.ValidateStruct(&s,

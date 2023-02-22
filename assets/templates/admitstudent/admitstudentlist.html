@@ -38,6 +38,7 @@
                                             <th>Class name</th>
                                             <th>Roll</th>
                                             <th>Status</th>
+                                            <th>Add Mark</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -65,6 +66,9 @@
                                                 </td>
                                                 <td>
                                                     {{ if .Status}}Active{{else}}Inactive{{end}}
+                                                </td>
+                                                <td>
+                                                    <a href="/addmark/{{.ID}}" target="_parent"><button class="button button1">Add Mark</button></a>
                                                 </td>
                                                 <td>
                                                     <span><a href="#"><i class="ti-eye color-default"></i></a> </span>
