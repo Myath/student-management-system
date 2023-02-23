@@ -1,110 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Log In | UBold - Responsive Admin Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- App favicon -->
+        <link rel="shortcut icon" href="static/assets/images/favicon.ico">
 
+		<!-- App css -->
+		<link href="static/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+		<link href="static/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
 
-<!-- Mirrored from www.webstrot.com/html/webstrotadmin/bootstrap3/default/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Feb 2023 15:37:48 GMT -->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="static/assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+		<link href="static/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
 
-    <title>Login</title>
+		<!-- icons -->
+		<link href="static/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
-    <!-- ================= Favicon ================== -->
-    <!-- Standard -->
-    <link rel="shortcut icon" href="https://www.placeholder.com/64.png/000/fff">
-    <!-- Retina iPad Touch Icon-->
-    <link rel="apple-touch-icon" sizes="144x144" href="https://www.placeholder.com/144.png/000/fff">
-    <!-- Retina iPhone Touch Icon-->
-    <link rel="apple-touch-icon" sizes="114x114" href="https://www.placeholder.com/114.png/000/fff">
-    <!-- Standard iPad Touch Icon-->
-    <link rel="apple-touch-icon" sizes="72x72" href="https://www.placeholder.com/72.png/000/fff">
-    <!-- Standard iPhone Touch Icon-->
-    <link rel="apple-touch-icon" sizes="57x57" href="https://www.placeholder.com/57.png/000/fff">
+    </head>
 
-    <!-- Styles -->
-    <link href="static/css/lib/font-awesome.min.css" rel="stylesheet">
-    <link href="static/css/lib/themify-icons.css" rel="stylesheet">
-    <link href="static/css/lib/menubar/sidebar.css" rel="stylesheet">
-    <link href="static/css/lib/bootstrap.min.css" rel="stylesheet">
-    <link href="static/css/lib/unix.css" rel="stylesheet">
-    <link href="static/css/style.css" rel="stylesheet">
-</head>
+    <body class="loading authentication-bg authentication-bg-pattern">
 
-<body class="bg-primary">
+        <div class="account-pages mt-5 mb-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card bg-pattern">
 
-    <div class="unix-login">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-lg-offset-3">
-                    <div class="login-content">
-                        <div class="login-logo">
-                        </div>
-                        <div class="login-form">
-                            <h4>Administratior Login</h4>
-                            <form action="/adminLogin" method="POST">
-                                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-                                <div class="form-group">
-                                    <label>Username</label>
-                                    <input type="username" class="form-control" name= "username" placeholder="username" value="{{ .Admin.Username}}">
+                            <div class="card-body p-4">
+                                
+                                <div class="text-center w-75 m-auto">
+                                    <div class="auth-logo">
+                                        <a href="#" class="logo logo-dark text-center">
+                                            <span class="logo-lg">
+                                                <img src="static/assets/images/logo-dark.png" alt="" height="22">
+                                            </span>
+                                        </a>
+                    
+                                        <a href="#" class="logo logo-light text-center">
+                                            <span class="logo-lg">
+                                                <img src="static/assets/images/logo-light.png" alt="" height="22">
+                                            </span>
+                                        </a>
+                                    </div>
+                                    <p class="text-muted mb-4 mt-3">Enter your email address and password to access admin panel.</p>
                                 </div>
-                            
-                                {{if .FormError.Username}}
+
+                                <form action="/adminLogin" method="POST">
+                                    <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+                                    <div class="form-group mb-3">
+                                        <label for="username">Username</label>
+                                        <input class="form-control" type="username" id="username" name= "username" placeholder="Enter your username" value="{{ .Admin.Username}}">
+                                    </div>
+
+                                    {{if .FormError.Username}}
                                     <div class="alert alert-danger">
                                         <strong>Danger!</strong> {{ .FormError.Username }}
                                     </div>
-                                {{end}}
+                                    {{end}}
 
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input type="password" class="form-control" name= "password" placeholder="Password" >
-                                </div>
-                                <div class="checkbox">
-                                    <label>
-										<input type="checkbox"> Remember Me
-									</label>
-                                    <label class="pull-right">
-										<a href="#">Forgotten Password?</a>
-									</label>
-
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Sign in</button>
-                                <div class="social-login-content">
-                                    <div class="social-button">
-                                        <button type="button" class="btn btn-primary bg-facebook btn-flat btn-addon m-b-10"><i class="ti-facebook"></i>Sign in with facebook</button>
-                                        <button type="button" class="btn btn-primary bg-twitter btn-flat btn-addon m-t-10"><i class="ti-twitter"></i>Sign in with twitter</button>
+                                    <div class="form-group mb-3">
+                                        <label for="password">Password</label>
+                                        <div class="input-group input-group-merge">
+                                            <input type="password" id="password" class="form-control" name= "password" placeholder="Enter your password">
+                                            <div class="input-group-append" data-password="false">
+                                                <div class="input-group-text">
+                                                    <span class="password-eye"></span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    <div class="form-group mb-3">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked>
+                                            <label class="custom-control-label" for="checkbox-signin">Remember me</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-0 text-center">
+                                        <button class="btn btn-primary btn-block" type="submit"> Log In </button>
+                                    </div>
+
+                                </form>
+
+                                <div class="text-center">
+                                    <h5 class="mt-3 text-muted">Sign in with</h5>
+                                    <ul class="social-list list-inline mt-3 mb-0">
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);" class="social-list-item border-info text-info"><i class="mdi mdi-twitter"></i></a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary"><i class="mdi mdi-github"></i></a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="register-link m-t-15 text-center">
-                                    <p>Don't have account ? <a href="/admincreate"> Sign Up Here</a></p>
-                                </div>
-                            </form>
+
+                            </div> <!-- end card-body -->
                         </div>
-                    </div>
+                        <!-- end card -->
+
+                        <div class="row mt-3">
+                            <div class="col-12 text-center">
+                                <p> <a href="auth-recoverpw.html" class="text-white-50 ml-1">Forgot your password?</a></p>
+                                <p class="text-white-50">Don't have an account? <a href="/admincreate" class="text-white ml-1"><b>Sign Up</b></a></p>
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                    </div> <!-- end col -->
                 </div>
+                <!-- end row -->
             </div>
+            <!-- end container -->
         </div>
-    </div>
-
-</body>
- <!-- jquery vendor -->
- <script src="static/js/lib/jquery.min.js"></script>
- <script src="static/js/lib/jquery.nanoscroller.min.js"></script>
- <!-- nano scroller -->
- <script src="static/js/lib/menubar/sidebar.js"></script>
- <script src="static/js/lib/preloader/pace.min.js"></script>
- <!-- sidebar -->
- <script src="static/js/lib/bootstrap.min.js"></script>
- <!-- bootstrap -->
+        <!-- end page -->
 
 
- <!--  Chart js -->
- <!--  Chart js -->
- <script src="static/js/lib/chart-js/Chart.bundle.js"></script>
- <script src="static/js/lib/chart-js/chartjs-init.js"></script>
- <!-- // Chart js -->
- <!-- // Chart js -->
- <script src="static/js/scripts.js"></script>
+        <footer class="footer footer-alt">
+            2015 - <script>document.write(new Date().getFullYear())</script> &copy; UBold theme by <a href="" class="text-white-50">Coderthemes</a> 
+        </footer>
 
-<!-- Mirrored from www.webstrot.com/html/webstrotadmin/bootstrap3/default/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 14 Feb 2023 15:37:48 GMT -->
+        <!-- Vendor js -->
+        <script src="static/assets/js/vendor.min.js"></script>
+
+        <!-- App js -->
+        <script src="static/assets/js/app.min.js"></script>
+        
+    </body>
 </html>

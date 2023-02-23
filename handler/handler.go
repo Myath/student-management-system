@@ -67,6 +67,7 @@ type dbstorage interface {
 	InsertStudentSubject(s storage.StudentSubject) (*storage.StudentSubject, error)
 	GetSubjectByClassID(class_id int) ([]storage.Subjects, error)
 	UpdateMark(s storage.StudentSubject) (*storage.StudentSubject, error)
+	DeleteMarkByID(StudentID int) error
 }
 
 const (
@@ -92,6 +93,9 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 	assetsPrefixForClassUpdate := "/class/update/static/"
 	assetsPrefixForAdminEdit := "/admin/edit/static/"
 	assetsPrefixForAddMark := "/addmark/static/"
+	assetsPrefixForProfile := "/profile/static/"
+	assetsPrefixForEditMark:= "/editmark/static/"
+	assetsPrefixForUpdateMark:= "/updatemark/static/"
 
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
@@ -102,16 +106,13 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 	r.Get("/admincreate", h.AdminCreate)
 	r.Post("/admincreate", h.AdminCreateProcess)
 
-	r.Get("/admin/edit/{id:[0-9]+}", h.AdminEdit)
-	r.Put("/admin/update/{id:[0-9]+}", h.AdminUpdate)
-	r.Get("/admin/delete/{id:[0-9]+}", h.DeleteAdmin)
-
 	r.Group(func(r chi.Router) {
 		r.Use(sm.LoadAndSave)
 		r.Use(h.AuthenticationForLogin)
 		r.Get(adminLoginPath, h.AdminLogin)
 		r.Post(adminLoginPath, h.AdminLoginProcess)
 	})
+	
 
 	// For Template Asset Prefixes
 	workDir, _ := os.Getwd()
@@ -125,7 +126,17 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 	r.Handle(assetsPrefixForClassUpdate+"*", http.StripPrefix(assetsPrefixForClassUpdate, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForAdminEdit+"*", http.StripPrefix(assetsPrefixForAdminEdit, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForAddMark+"*", http.StripPrefix(assetsPrefixForAddMark, http.FileServer(filesDir)))
+	r.Handle(assetsPrefixForProfile+"*", http.StripPrefix(assetsPrefixForProfile, http.FileServer(filesDir)))
+	r.Handle(assetsPrefixForEditMark+"*", http.StripPrefix(assetsPrefixForEditMark, http.FileServer(filesDir)))
+	r.Handle(assetsPrefixForUpdateMark+"*", http.StripPrefix(assetsPrefixForUpdateMark, http.FileServer(filesDir)))
 	
+	r.Group(func(r chi.Router) {
+		r.Use(sm.LoadAndSave)
+		r.Use(h.Authentication)
+		r.Get("/admin/edit/{id:[0-9]+}", h.AdminEdit)
+		r.Put("/admin/update/{id:[0-9]+}", h.AdminUpdate)
+		r.Get("/admin/delete/{id:[0-9]+}", h.DeleteAdmin)
+	})
 
 	r.Group(func(r chi.Router) {
 		r.Use(sm.LoadAndSave)
@@ -159,7 +170,13 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 
 		r.Get("/addmark/{id:[0-9]+}", h.AddMark)
 		r.Post("/markstore", h.Markstore)
+		r.Get("/profile/{id:[0-9]+}",h.Profile)
+		r.Get("/editmark/{id:[0-9]+}",h.EditMark)
+		r.Post("/updatemark/{id:[0-9]+}",h.MarkUpdate)
+		r.Get("/deletemark/{id:[0-9]+}",h.DeleteMark)
 
+		r.Get("/addadmin", h.AdminAdd)
+		r.Post("/addadmin", h.AddAdminCreateProcess)
 		r.Get("/adminlogout", h.AdminLogOut)
 	})
 

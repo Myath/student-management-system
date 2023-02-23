@@ -137,12 +137,20 @@ func (a LoginAdmin) Validate() error {
 			validation.Required.Error("The username field is required."),
 			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
 		),
-		// validation.Field(&a.Email,
-		// 	validation.Required.Error("The email field is required."),
-		// 	is.Email.Error("This email is not valid."),
-		// ),
+		validation.Field(&a.First_name,
+			validation.Required.Error("The name field is required."),
+			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
+		),
+		validation.Field(&a.Last_name,
+			validation.Required.Error("The name field is required."),
+			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
+		),
+		validation.Field(&a.Email,
+			validation.Required.When(a.ID == 0).Error("The email field is required."),
+			is.Email.Error("This email is not valid."),
+		),
 		validation.Field(&a.Password,
-			validation.Required.Error("The password field is required."),
+			validation.Required.When(a.ID == 0).Error("The password field is required."),
 			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
 		),
 	)
@@ -167,66 +175,3 @@ func (s Subjects) Validate() error {
 		),
 	)
 }
-
-// func rollAlreadyExists(value any) error {
-// 	roll, ok := value.(int)
-// 	if !ok {
-// 		return errors.New("unsupported data given")
-// 	}
-
-// 	db, err := sqlx.Connect("postgres", "user=postgres password=secret dbname=students_management sslmode=disable")
-// 	if err != nil {
-// 		log.Fatalln(err)
-// 	}
-
-// 	var student []Student
-
-// 	if err := db.Select(&student, `SELECT * FROM students`); err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	// var editUser User
-// 	for _, user := range student {
-// 		if user.Roll == roll {
-// 			return errors.New("the roll already exists")
-// 		}
-// 	}
-// 	return nil
-// }
-
-// func emailAlreadyExists(value any) error {
-// 	email, ok := value.(string)
-// 	if !ok {
-// 		return errors.New("unsupported data given")
-// 	}
-
-// 	db, err := sqlx.Connect("postgres", "user=postgres password=secret dbname=students_management sslmode=disable")
-// 	if err != nil {
-// 		log.Fatalln(err)
-// 	}
-
-// 	var student []Student
-
-// 	if err := db.Select(&student, `SELECT * FROM students`); err != nil {
-// 		log.Fatal(err)
-// 	}
-
-// 	// var editUser User
-// 	for _, user := range student {
-// 		if user.Email == email {
-// 			return errors.New("the email already exists")
-// 		}
-// 	}
-// 	return nil
-// }
-
-// func (s Student) storeAlreadyExistValidate() error {
-// 	return validation.ValidateStruct(&s,
-// 		validation.Field(&s.Email,
-// 			validation.By(emailAlreadyExists),
-// 		),
-// 		validation.Field(&s.Roll,
-// 			validation.By(rollAlreadyExists),
-// 		),
-// 	)
-// }
