@@ -118,4 +118,3 @@ func (p PostgresStorage) CheckSubjectExists(subjectname string, class_id int) (b
 	}
 	return exists, nil
 }
-

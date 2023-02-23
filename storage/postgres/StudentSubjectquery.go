@@ -2,6 +2,7 @@ package postgres
 
 import (
 	"STUDENT-MANAGEMENT-PROJECT/storage"
+	"fmt"
 	"log"
 )
 
@@ -76,7 +77,7 @@ FROM student_subject AS stsub
 INNER JOIN subjects ON stsub.subject_id = subjects.id
 INNER JOIN admitstudent ON stsub.student_id = admitstudent.id
 INNER JOIN classes ON subjects.class_id = classes.id
-WHERE stsub.student_id = $1 AND stsub.deleted_at IS NULL`
+WHERE stsub.student_id = $1 AND admitstudent.deleted_at IS NULL`
 
 func (p PostgresStorage) GetFixedStudentSubjectByID(id int) ([]storage.StudentSubject, error) {
 	var s []storage.StudentSubject
@@ -88,3 +89,24 @@ func (p PostgresStorage) GetFixedStudentSubjectByID(id int) ([]storage.StudentSu
 	return s, nil
 }
 
+const deleteMarkByIDQuery = `UPDATE student_subject SET deleted_at = CURRENT_TIMESTAMP WHERE student_id=$1 AND deleted_at IS NULL`
+
+func (p PostgresStorage) DeleteMarkByID(StudentID int) error {
+	res, err := p.DB.Exec(deleteMarkByIDQuery, StudentID)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	rowCount, err := res.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	if rowCount <= 0 {
+		return fmt.Errorf("unable to delete user")
+	}
+
+	return nil
+}

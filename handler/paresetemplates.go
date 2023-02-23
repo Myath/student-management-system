@@ -147,3 +147,14 @@ func (h Handler) pharseMarksAdd(w http.ResponseWriter, data any) {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 	}
 }
+
+func (h Handler) pareseAddAdminCreateTemplate(w http.ResponseWriter, data any) {
+	t := h.Templates.Lookup("addadmin.html")
+	if t == nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}
+	if err := t.Execute(w, data); err != nil {
+		log.Fatal(err)
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+	}
+}

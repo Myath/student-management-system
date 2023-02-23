@@ -11,8 +11,12 @@
                     <div class="page-title-box">
                         <div class="page-title-right">
                             <form action="/classlist" method="get">
-                                <input type="text" name="SearchTerm" id="term" value="{{ .SearchTerm}}">
-                                <input type="submit" value="Search">
+                                <div class="input-group m-t-10">
+                                    <input type="text" class="form-control" name="SearchTerm" value="{{ .SearchTerm}}">
+                                <span class="input-group-append">
+                                    <button type="submit" class="btn waves-effect waves-light btn-blue"><i class="fa fa-search mr-1"></i> Search</button>
+                                </span>
+                                </div>
                             </form>
                         </div>
                         <h4 class="page-title">Class Table</h4>
