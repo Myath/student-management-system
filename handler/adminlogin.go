@@ -13,6 +13,7 @@ import (
 
 type AdminForm struct {
 	Admin     storage.LoginAdmin
+	Logintime storage.AdminLogin
 	CSRFToken string
 	FormError map[string]error
 }
@@ -28,7 +29,7 @@ func (h Handler) AdminLoginProcess(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	admin := storage.LoginAdmin{}
+	admin := storage.AdminLogin{}
 	if err := h.decoder.Decode(&admin, r.PostForm); err != nil {
 		log.Println(err)
 		http.Error(w, "internal server error", http.StatusInternalServerError)
@@ -39,7 +40,7 @@ func (h Handler) AdminLoginProcess(w http.ResponseWriter, r *http.Request) {
 			admin.FormError = vErr
 		}
 		h.pareseLoginTemplate(w, AdminForm{
-			Admin:     admin,
+			Logintime:     admin,
 			CSRFToken: nosurf.Token(r),
 			FormError: admin.FormError,
 		})
@@ -50,7 +51,7 @@ func (h Handler) AdminLoginProcess(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		h.pareseLoginTemplate(w, AdminForm{
-			Admin:     admin,
+			Logintime:     admin,
 			CSRFToken: nosurf.Token(r),
 			FormError: map[string]error{
 				"Username": fmt.Errorf("credentials does not match"),
@@ -60,7 +61,7 @@ func (h Handler) AdminLoginProcess(w http.ResponseWriter, r *http.Request) {
 
 	if err := bcrypt.CompareHashAndPassword([]byte(ad.Password), []byte(admin.Password)); err != nil {
 		h.pareseLoginTemplate(w, AdminForm{
-			Admin:     admin,
+			Logintime:     admin,
 			CSRFToken: nosurf.Token(r),
 			FormError: map[string]error{
 				"Username": fmt.Errorf("credentials does not match"),

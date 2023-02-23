@@ -102,7 +102,7 @@ func (h Handler) AdmitStudentProcess(w http.ResponseWriter, r *http.Request) {
 			Class:     storage.Classes{},
 			CSRFToken: nosurf.Token(r),
 			FormError: map[string]error{
-				"Email": fmt.Errorf("The username already Exist."),
+				"Email": fmt.Errorf("The Email already Exist."),
 			}})
 		return
 	}
@@ -327,6 +327,11 @@ func (h Handler) DeleteAdmitStudent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.storage.DeleteAdmitStudentByID(uID); err != nil {
+		http.Error(w, "internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	if err := h.storage.DeleteMarkByID(uID); err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)
 		return
 	}

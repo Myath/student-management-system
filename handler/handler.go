@@ -92,6 +92,7 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 	assetsPrefixForClassEdit := "/class/edit/static/"
 	assetsPrefixForClassUpdate := "/class/update/static/"
 	assetsPrefixForAdminEdit := "/admin/edit/static/"
+	assetsPrefixForAdminUpdate := "/admin/update/static/"
 	assetsPrefixForAddMark := "/addmark/static/"
 	assetsPrefixForProfile := "/profile/static/"
 	assetsPrefixForEditMark:= "/editmark/static/"
@@ -125,6 +126,7 @@ func NewHandler(sm *scs.SessionManager, formdecoder *form.Decoder, storage dbsto
 	r.Handle(assetsPrefixForClassEdit+"*", http.StripPrefix(assetsPrefixForClassEdit, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForClassUpdate+"*", http.StripPrefix(assetsPrefixForClassUpdate, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForAdminEdit+"*", http.StripPrefix(assetsPrefixForAdminEdit, http.FileServer(filesDir)))
+	r.Handle(assetsPrefixForAdminUpdate+"*", http.StripPrefix(assetsPrefixForAdminUpdate, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForAddMark+"*", http.StripPrefix(assetsPrefixForAddMark, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForProfile+"*", http.StripPrefix(assetsPrefixForProfile, http.FileServer(filesDir)))
 	r.Handle(assetsPrefixForEditMark+"*", http.StripPrefix(assetsPrefixForEditMark, http.FileServer(filesDir)))

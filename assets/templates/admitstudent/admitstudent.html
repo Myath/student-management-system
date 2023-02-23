@@ -111,6 +111,12 @@
                                     </div>
                                 </div>
 
+                                {{if .FormError.Password}}
+                                    <div class="alert alert-danger">
+                                        <strong>Danger!</strong> {{ .FormError.Password }}
+                                    </div>
+                                {{end}}
+
                                 <button type="submit" class="btn btn-primary waves-effect waves-light">Add</button>
 
                             </form>

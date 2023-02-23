@@ -182,9 +182,6 @@ func (h Handler) DeleteMark(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	// const (
-	// 	Marks = 0
-	// )
 
 	if err := h.storage.DeleteMarkByID(uID); err != nil {
 		http.Error(w, "internal server error", http.StatusInternalServerError)

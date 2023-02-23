@@ -40,7 +40,8 @@ func (p PostgresStorage) InsertStudentSubject(s storage.StudentSubject) (*storag
 const updateMarkQuery = `UPDATE student_subject
 		SET student_id = :student_id, 
 		subject_id = :subject_id,
-		marks = :marks
+		marks = :marks,
+		deleted_at = NULL
 		WHERE student_id = $1 AND subject_id = $2
 		RETURNING *;
 	`
@@ -89,7 +90,7 @@ func (p PostgresStorage) GetFixedStudentSubjectByID(id int) ([]storage.StudentSu
 	return s, nil
 }
 
-const deleteMarkByIDQuery = `UPDATE student_subject SET deleted_at = CURRENT_TIMESTAMP WHERE student_id=$1 AND deleted_at IS NULL`
+const deleteMarkByIDQuery = `UPDATE student_subject SET deleted_at = CURRENT_TIMESTAMP , marks = 0 WHERE student_id=$1 AND deleted_at IS NULL`
 
 func (p PostgresStorage) DeleteMarkByID(StudentID int) error {
 	res, err := p.DB.Exec(deleteMarkByIDQuery, StudentID)

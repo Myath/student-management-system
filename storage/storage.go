@@ -24,6 +24,14 @@ type AdmitStudentFilter struct {
 	SearchTerm string
 }
 
+
+type AdminLogin struct {
+	ID         int              `db:"id" form:"-"`
+	Username   string           `db:"username" form:"username"`
+	Password   string           `db:"password" form:"password"`
+	FormError  map[string]error `db:"-"`
+}
+
 type LoginAdmin struct {
 	ID         int              `db:"id" form:"-"`
 	Username   string           `db:"username" form:"username"`
@@ -116,11 +124,11 @@ func (s AdmitStudents) Validate() error {
 			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
 		),
 		validation.Field(&s.Email,
-			validation.Required.When(s.ID == 0).Error("The email field is required."),
+			validation.Required.Error("The email field is required."),
 			is.Email.Error("This email is not valid."),
 		),
 		validation.Field(&s.Roll,
-			validation.Required.When(s.ID == 0).Error("Student roll start from 1"),
+			validation.Required.Error("Student roll start from 1"),
 			validation.Min(1).Error("Student roll start from 1"),
 			validation.Max(200).Error("Only 200 Students are allowed"),
 		),
@@ -146,11 +154,24 @@ func (a LoginAdmin) Validate() error {
 			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
 		),
 		validation.Field(&a.Email,
-			validation.Required.When(a.ID == 0).Error("The email field is required."),
+			validation.Required.Error("The email field is required."),
 			is.Email.Error("This email is not valid."),
 		),
 		validation.Field(&a.Password,
 			validation.Required.When(a.ID == 0).Error("The password field is required."),
+			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
+		),
+	)
+}
+
+func (a AdminLogin) Validate() error {
+	return validation.ValidateStruct(&a,
+		validation.Field(&a.Username,
+			validation.Required.Error("The username field is required."),
+			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
+		),
+		validation.Field(&a.Password,
+			validation.Required.Error("The password field is required."),
 			validation.Length(3, 32).Error("The name field must be between 3 to 32 characters."),
 		),
 	)
