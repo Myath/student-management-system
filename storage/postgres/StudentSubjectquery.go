@@ -72,7 +72,7 @@ func (s PostgresStorage) GetSubjectByClassID(class_id int) ([]storage.Subjects, 
 	return u, nil
 }
 
-
+// Query For StudentSubject ANd profile
 const getFixedStudentSubjectByIDQuery = `SELECT stsub.*, subjects.subjectname, admitstudent.username, admitstudent.first_name, admitstudent.last_name, admitstudent.email, admitstudent.roll, classes.classname
 FROM student_subject AS stsub
 INNER JOIN subjects ON stsub.subject_id = subjects.id
@@ -90,6 +90,7 @@ func (p PostgresStorage) GetFixedStudentSubjectByID(id int) ([]storage.StudentSu
 	return s, nil
 }
 
+// Query For delete Mark
 const deleteMarkByIDQuery = `UPDATE student_subject SET deleted_at = CURRENT_TIMESTAMP , marks = 0 WHERE student_id=$1 AND deleted_at IS NULL`
 
 func (p PostgresStorage) DeleteMarkByID(StudentID int) error {

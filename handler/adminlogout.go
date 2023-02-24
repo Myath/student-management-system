@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// For Admin Logout
 func (h Handler) AdminLogOut(w http.ResponseWriter, r *http.Request) {
 	if err := h.sessionManager.Destroy(r.Context()); err != nil {
 		log.Fatal(err)

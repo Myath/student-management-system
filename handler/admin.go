@@ -25,7 +25,7 @@ func (h Handler) AdminCreate(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-//For AdminCreate Insert
+//For Admin Insert
 func (h Handler) AdminCreateProcess(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)
@@ -74,7 +74,7 @@ func (h Handler) AdminCreateProcess(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/adminLogin", http.StatusSeeOther)
 }
 
-//For SHow AdminList
+//For Show AdminList
 func (h Handler) AdminList(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)
@@ -223,12 +223,14 @@ func (h Handler) IsAdmin(w http.ResponseWriter, r *http.Request, username, email
 	return ad, nil
 }
 
+//For AdminAdd
 func (h Handler) AdminAdd(w http.ResponseWriter, r *http.Request) {
 	h.pareseAddAdminCreateTemplate(w, AdminForm{
 		CSRFToken: nosurf.Token(r),
 	})
 }
 
+// For AddAdmin Insert
 func (h Handler) AddAdminCreateProcess(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)

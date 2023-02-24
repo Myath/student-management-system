@@ -367,7 +367,7 @@ func (h Handler) IsAdmitStudentRoll(w http.ResponseWriter, r *http.Request, roll
 	return ad, nil
 }
 
-// For StudentSubject Insert Function
+// For StudentSubject Insert
 func (h Handler) StudentSubjectHandler(w http.ResponseWriter, r *http.Request, classID int, studentID int) error {
 
 	subject, err := h.storage.GetSubjectByClassID(classID)

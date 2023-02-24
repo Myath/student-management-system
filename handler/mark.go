@@ -2,6 +2,7 @@ package handler
 
 import (
 	"STUDENT-MANAGEMENT-PROJECT/storage"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -80,7 +81,7 @@ func (h Handler) Markstore(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/admitstudentlist", http.StatusSeeOther)
 }
 
-
+// For Student Profile Show
 func (h Handler) Profile(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	uID, err := strconv.Atoi(id)
@@ -141,6 +142,7 @@ func (h Handler) EditMark(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, data)
 }
 
+// For Mark Update
 func (h Handler) MarkUpdate(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)
@@ -173,9 +175,10 @@ func (h Handler) MarkUpdate(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	http.Redirect(w, r, "/admitstudentlist", http.StatusSeeOther)
+	http.Redirect(w, r, fmt.Sprintf("%s/%d","/profile", uID), http.StatusSeeOther)
 }
 
+// For Delete Mark
 func (h Handler) DeleteMark(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	uID, err := strconv.Atoi(id)

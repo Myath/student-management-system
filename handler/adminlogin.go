@@ -18,12 +18,14 @@ type AdminForm struct {
 	FormError map[string]error
 }
 
+// For Admin Login
 func (h Handler) AdminLogin(w http.ResponseWriter, r *http.Request) {
 	h.pareseLoginTemplate(w, AdminForm{
 		CSRFToken: nosurf.Token(r),
 	})
 }
 
+// For Admin Login Process
 func (h Handler) AdminLoginProcess(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		log.Fatal(err)
